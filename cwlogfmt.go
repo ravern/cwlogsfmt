@@ -3,7 +3,8 @@ package cwlogfmt
 import "github.com/sirupsen/logrus"
 
 // CloudWatchLogsFormatter provides formatting similar to the default
-// CloudWatch Logs format (from AWS Lambda).
+// CloudWatch Logs format (from AWS Lambda). Uses the field Message to
+// log the message.
 //
 //     // Examples of the format
 //     START RequestId: 66389135-fd00-11e7-a1f9-8945479469b0 Version: $LATEST

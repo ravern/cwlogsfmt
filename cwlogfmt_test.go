@@ -26,6 +26,39 @@ func TestCloudWatchLogsFormatter_Format(t *testing.T) {
 			Level:    logrus.DebugLevel,
 			Expected: "DEBUG Message: Message BoolField: true IntField: 1 \n",
 		},
+		{
+			Formatter: &cwlogfmt.CloudWatchLogsFormatter{
+				QuoteEmptyFields: true,
+			},
+			Fields: logrus.Fields{
+				"EmptyField":      "",
+				"AnotherIntField": 1000,
+			},
+			Message:  "Message2",
+			Level:    logrus.InfoLevel,
+			Expected: "INFO Message: Message2 AnotherIntField: 1000 EmptyField: \"\" \n",
+		},
+		{
+			Formatter: &cwlogfmt.CloudWatchLogsFormatter{},
+			Fields: logrus.Fields{
+				"QuotedField": "\\",
+			},
+			Message:  "Message3",
+			Level:    logrus.WarnLevel,
+			Expected: "WARNING Message: Message3 QuotedField: \"\\\\\" \n",
+		},
+		{
+			Formatter: &cwlogfmt.CloudWatchLogsFormatter{
+				DisableSorting: true,
+			},
+			Fields: logrus.Fields{
+				"BField": 1,
+				"AField": 2,
+			},
+			Message:  "Message4",
+			Level:    logrus.WarnLevel,
+			Expected: "WARNING Message: Message4 BField: 1 AField: 2 \n",
+		},
 	}
 
 	for i, test := range tests {

@@ -4,20 +4,20 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/ravernkoh/cwlogfmt"
+	"github.com/ravernkoh/cwlogsfmt"
 	"github.com/sirupsen/logrus"
 )
 
 func TestCloudWatchLogsFormatter_Format(t *testing.T) {
 	tests := []struct {
-		Formatter *cwlogfmt.CloudWatchLogsFormatter
+		Formatter *cwlogsfmt.CloudWatchLogsFormatter
 		Fields    logrus.Fields
 		Message   string
 		Level     logrus.Level
 		Expected  string
 	}{
 		{
-			Formatter: &cwlogfmt.CloudWatchLogsFormatter{},
+			Formatter: &cwlogsfmt.CloudWatchLogsFormatter{},
 			Fields: logrus.Fields{
 				"BoolField": true,
 				"IntField":  1,
@@ -27,7 +27,7 @@ func TestCloudWatchLogsFormatter_Format(t *testing.T) {
 			Expected: "DEBUG Message: Message BoolField: true IntField: 1 \n",
 		},
 		{
-			Formatter: &cwlogfmt.CloudWatchLogsFormatter{
+			Formatter: &cwlogsfmt.CloudWatchLogsFormatter{
 				QuoteEmptyFields: true,
 			},
 			Fields: logrus.Fields{
@@ -39,7 +39,7 @@ func TestCloudWatchLogsFormatter_Format(t *testing.T) {
 			Expected: "INFO Message: Message2 AnotherIntField: 1000 EmptyField: \"\" \n",
 		},
 		{
-			Formatter: &cwlogfmt.CloudWatchLogsFormatter{},
+			Formatter: &cwlogsfmt.CloudWatchLogsFormatter{},
 			Fields: logrus.Fields{
 				"QuotedField": "\\",
 			},
@@ -48,7 +48,7 @@ func TestCloudWatchLogsFormatter_Format(t *testing.T) {
 			Expected: "WARNING Message: Message3 QuotedField: \"\\\\\" \n",
 		},
 		{
-			Formatter: &cwlogfmt.CloudWatchLogsFormatter{
+			Formatter: &cwlogsfmt.CloudWatchLogsFormatter{
 				DisableSorting: true,
 			},
 			Fields: logrus.Fields{
@@ -58,6 +58,18 @@ func TestCloudWatchLogsFormatter_Format(t *testing.T) {
 			Message:  "Message4",
 			Level:    logrus.WarnLevel,
 			Expected: "WARNING Message: Message4 BField: 1 AField: 2 \n",
+		},
+		{
+			Formatter: &cwlogsfmt.CloudWatchLogsFormatter{
+				PrefixFields: []string{"PrefixField"},
+			},
+			Fields: logrus.Fields{
+				"PrefixField": 1,
+				"NormalField": 2,
+			},
+			Message:  "Message5",
+			Level:    logrus.InfoLevel,
+			Expected: "INFO PrefixField: 1 Message: Message5 NormalField: 2 \n",
 		},
 	}
 

@@ -1,4 +1,4 @@
-package cwlogfmt_test
+package cwlogsfmt_test
 
 import (
 	"bytes"

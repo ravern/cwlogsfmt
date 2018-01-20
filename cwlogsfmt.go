@@ -1,4 +1,4 @@
-package cwlogfmt
+package cwlogsfmt
 
 import (
 	"bytes"
